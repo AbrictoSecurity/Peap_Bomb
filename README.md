@@ -1,6 +1,6 @@
 # Peap_Bomb
 <p align="center">
-  <img src="./img/PB.png">
+  <img src="./img/PB2.png">
 </p>
 
 Peap Bomb is a password sprayer for WPA/WPA2 enterprise wireless that is leveraging PEAP for Authentication. 
