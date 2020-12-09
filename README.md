@@ -22,6 +22,7 @@ Connect up to 6 Wireless adapters to your device.
 ## Running 
 1. Create a users list. NOTE: Most environments have account lockouts, Each user will take about 20 seconds to test a password on, if your user list is small or if you are using 6 adapters on a medium sized list you might lock accounts out. 
 2. Create a potential password list. NOTE: This can be a large as you want, however the bigger it is the longer it will take for Peap Bomb to finish. 
+3. Peap Bomb can currently support up to 12 wireless interfaces at once.
 
 ```
 sudo python3 peapbomb.py
