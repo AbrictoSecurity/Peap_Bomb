@@ -103,7 +103,7 @@ def bomb():
     print(color.END + """\
                             Created By Marantral The Mantroll
                          Abricto Security - abrictosecurity.com
-                                     version 0.1
+                                     version 0.2
     """)
     print(
         color.GREEN + color.BOLD + "\nFor your convenience here are all the interfaces that seem to be wireless:" + color.RED)
