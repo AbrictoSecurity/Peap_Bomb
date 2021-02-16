@@ -16,7 +16,7 @@ sudo apt install wpasupplicant
 
 You should then restart your device!!!
 
-Connect up to 6 Wireless adapters to your device. 
+Connect up to 12 Wireless adapters to your device. 
 
 
 ## Running 
