@@ -12,6 +12,8 @@ Peap Bomb is a password sprayer for WPA/WPA2 enterprise wireless that is leverag
 ## Setup
 ```
 sudo apt install wpasupplicant
+
+sudo git clone https://github.com/AbrictoSecurity/Peap_Bomb.git
 ```
 
 You should then restart your device!!!
